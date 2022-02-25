@@ -144,6 +144,7 @@ exports.resetPassword = bigPromise(async (req, res, next) => {
 
 exports.getUserDetails = bigPromise(async (req, res, next) => {
   res.status(200).json({
+    success: true,
     user: req.user,
   });
 });

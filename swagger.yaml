@@ -1,1 +1,378 @@
 openapi: 3.0.0
+info: 
+  title: Calensi api
+  description: REST API for calendly clone
+  version: 0.1.0
+
+servers:
+  - url: http://localhost:4000/api/v1
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []  
+
+paths:
+  /signup:
+    post:
+      tags:
+        - user
+      summary: returns a msg.
+      description: registers new user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+
+  /login:
+    post:
+      tags:
+        - user
+      summary: returns a msg.
+      description: logins a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: token
+                  user:
+                    type: object
+
+  /logout:
+    get:
+      tags:
+        - user
+      summary: returns a msg.
+      description: logout the user.
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  msg:
+                    type: string 
+
+  /forgotpassword:
+    post:
+      tags:
+        - user
+      summary: returns a msg.
+      description: returns forgotpassword token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  msg:
+                    type: string
+                  token:
+                    type: string
+
+  /resetPassword/{token}:
+    post:
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+      tags:
+        - user
+      summary: returns a msg.
+      description: returns token.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: token
+                  user:
+                    type: object         
+
+  /dashboard:
+    get:
+      tags:
+        - user
+      summary: returns a msg.
+      description: returns userinfo.
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  user:
+                    type: object
+
+  /schedule/create:
+    post:
+      tags:
+        - schedule
+      summary: returns a schedule.
+      description: returns created schedule.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                startTime:
+                  type: string
+                numberOfSlots:
+                  type: integer
+                duration:
+                  type: integer
+
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  schedule:
+                    type: object
+  
+  /schedule/delete:
+    post:
+      tags:
+        - schedule
+      summary: returns a schedule.
+      description: returns created schedule.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduleId:
+                  type: string
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  msg:
+                    type: string
+
+  /schedule/{scheduleId}:
+    get:
+      parameters:
+        - in: path
+          name: scheduleId
+          required: true
+          schema:
+            type: string
+      tags:
+        - schedule
+      summary: returns a schedule.
+      description: returns schedule.
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  schedule:
+                    type: object
+  
+  /schedules:
+    get:
+      tags:
+        - schedule
+      summary: returns a schedule.
+      description: returns schedule.
+
+      responses:
+        200:
+          description: returns a array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    schedule:
+                      type: object
+
+  /bookslot:
+    post:
+      tags:
+        - schedule
+      summary: returns a schedule.
+      description: returns created schedule.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduleId:
+                  type: string
+                attendeeInfo:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    email: 
+                      type: string
+                slot:
+                  type: integer
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  msg:
+                    type: string
+  
+  /deleteslot:
+    post:
+      tags:
+        - schedule
+      summary: returns a msg.
+      description: deletes schedule.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scheduleId:
+                  type: string
+                email:
+                  type: string
+
+      responses:
+        200:
+          description: returns a object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  msg:
+                    type: string
+
+
+
+                  
+                
+

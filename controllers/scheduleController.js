@@ -59,6 +59,7 @@ exports.getSchedule = bigPromise(async (req, res, next) => {
 });
 
 exports.getSchedules = bigPromise(async (req, res, next) => {
+  console.log(req.user._id);
   const schedules = await Schedule.find({ user: req.user._id });
 
   res.status(200).json({
