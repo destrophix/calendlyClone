@@ -23,10 +23,9 @@ const scheduleSchema = new mongoose.Schema({
   },
   bookedSlots: [
     {
-      user: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
-        required: [true, "User object is required"],
+      attendeeInfo: {
+        name: String,
+        email: String,
       },
       slot: {
         type: Number,
